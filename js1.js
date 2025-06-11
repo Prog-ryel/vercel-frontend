@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // DOM Elements
-  const API_URL = "https://mysystembsit.onlinewebshop.net"; // Replace with your actual API URL
+  const API_URL = "http://mysystembsit.onlinewebshop.net"; // Replace with your actual API URL
   const startScreen = document.getElementById("start-screen");
   const quizScreen = document.getElementById("quiz-screen");
   const resultScreen = document.getElementById("result-screen");
