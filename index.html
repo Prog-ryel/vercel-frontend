@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Color Vision Simulator Quizzes - A professional interactive quiz application with multiple categories and difficulty levels" />
+  <meta name="author" content="hello world" />
+  <title>Color Vision Simulator Quizzes</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+  /* Modern Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #4361ee;
+  --primary-dark: #3a56d4;
+  --secondary: #3f8efc;
+  --accent: #f72585;
+  --success: #4cc9f0;
+  --error: #f72585;
+  --light: #f8f9fa;
+  --dark: #212529;
+  --gray: #6c757d;
+  --gray-light: #e9ecef;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body {
+  background:#212529;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  min-height: 100vh;
+  padding: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+.container {
+  background-color: rgb(219, 215, 215);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 700px;
+  overflow: hidden;
+  position: relative;
+}
+  @media (max-width: 500px) {
+  .container {
+    width: 100%;
+    max-width: 90vw;
+  }
+}
+
+/* Logo and Header */
+.quiz-header-brand {
+  padding: 1.2rem 2rem;
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+.logo i {
+  font-size: 1.8rem;
+  margin-right: 0.8rem;
+}
+
+.portfolio-info a {
+  color: white;
+  font-size: 1.6rem;
+  opacity: 0.9;
+  transition: var(--transition);
+}
+
+.portfolio-info a:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* SCREENS */
+.screen {
+  display: none;
+  padding: 0;
+  text-align: center;
+}
+
+.screen.active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* START SCREEN */
+.start-content {
+  padding: 3rem 2rem;
+}
+
+#start-screen h1 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+#start-screen p {
+  color: var(--gray);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Category selector styles */
+
+.difficulty-selector, .category-selector {
+  background-color: rgba(67, 97, 238, 0.05);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.difficulty-selector h3 {
+   font-size: 1.1rem;
+    color: black;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+
+
+.categories,
+.difficulty-options,
+.category-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.category-checkbox,
+.difficulty-radio,
+.category-radio {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgb(221, 221, 221);
+  border-radius: 20px;
+  border: 1px solid var(--gray-light);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.category-checkbox:hover,
+.difficulty-radio:hover {
+  background: var(--success);
+  color: white;
+  border-color: var(--primary);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 18px rgba(76, 201, 240, 0.13);
+}
+
+.category-checkbox input,
+.difficulty-radio input {
+  margin-right: 0.5rem;
+}
+
+.features {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background-color: rgba(67, 97, 238, 0.05);
+  width: 30%;
+  transition: var(--transition);
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(67, 97, 238, 0.1);
+}
+
+.feature i {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+
+.feature span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* QUIZ SCREEN */
+.quiz-header {
+  padding: 2rem 2rem 1.5rem;
+  position: relative;
+}
+
+/* Fix for category badge overlapping with question */
+.category-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 2rem;
+  background: var(--primary);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  z-index: 5;
+  /* Ensure it's above other elements */
+}
+
+#question-text {
+  color: var(--dark);
+  font-size: 1.6rem;
+  margin-top: 1.5rem;
+  /* Add space at the top for the badge */
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+  font-weight: 600;
+  position: relative;
+  padding-right: 100px;
+  /* Make space for the category badge */
+}
+
+.quiz-info {
+  display: flex;
+  justify-content: space-between;
+  color: var(--gray);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.question-count,
+.score-display {
+  display: flex;
+  align-items: center;
+}
+
+.quiz-info i {
+  margin-right: 0.5rem;
+  color: var(--primary);
+}
+
+.answers-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 0 2rem 2rem;
+}
+
+.answer-btn {
+  background-color: white;
+  color: var(--dark);
+  border: 2px solid var(--gray-light);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition);
+  font-size: 1.05rem;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.answer-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--primary);
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.answer-btn:hover {
+  background-color: rgba(67, 97, 238, 0.05);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.answer-btn:hover::before {
+  opacity: 1;
+}
+
+.answer-btn.correct {
+  background-color: rgba(76, 201, 240, 0.1);
+  border-color: var(--success);
+  color: #037c9c;
+}
+
+.answer-btn.incorrect {
+  background-color: rgba(247, 37, 133, 0.1);
+  border-color: var(--error);
+  color: #c30052;
+}
+
+.progress-container {
+  padding: 0 2rem 2rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: var(--gray-light);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--success) 100%);
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.timer i {
+  margin-right: 0.5rem;
+  color: var(--primary);
+}
+
+/* RESULT SCREEN */
+.result-content {
+  padding: 3rem 2rem;
+}
+
+.result-icon {
+  font-size: 3.5rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+#result-screen h1 {
+  color: var(--primary);
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.result-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(67, 97, 238, 0.05);
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.score-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--primary), var(--secondary));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+}
+
+.score-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+#result-message {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Analytics section */
+.analytics-section {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.analytics-section h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.analytics-section h3 i {
+  margin-right: 0.5rem;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.analytics-card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.analytics-title {
+  background: var(--primary);
+  color: white;
+  padding: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.analytics-content {
+  padding: 1rem;
+  font-size: 0.9rem;
+  min-height: 100px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.portfolio-callout {
+  border-top: 1px solid var(--gray-light);
+  padding-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--gray);
+}
+
+.portfolio-callout a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.portfolio-callout a:hover {
+  text-decoration: underline;
+}
+
+button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.9rem 1.8rem;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button i {
+  margin-right: 0.5rem;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+}
+
+#share-btn {
+  background-color: white;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+#share-btn:hover {
+  background-color: rgba(67, 97, 238, 0.1);
+}
+
+/* Analytics Bar Charts */
+.analytics-item {
+  margin-bottom: 0.8rem;
+}
+
+.analytics-label {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.analytics-bar-container {
+  height: 20px;
+  background: var(--gray-light);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.analytics-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--success) 100%);
+  border-radius: 10px;
+  transition: width 1s ease-in-out;
+}
+
+.analytics-value {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  font-size: 0.75rem;
+  line-height: 20px;
+  color: var(--dark);
+  font-weight: 500;
+}
+
+/* Time Stats */
+.time-stats {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.time-stat {
+  padding: 0.8rem;
+  background: var(--gray-light);
+  border-radius: var(--radius);
+  width: 30%;
+}
+
+.time-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.time-label {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-top: 0.3rem;
+}
+
+/* Animation for analytics bars */
+@keyframes growBar {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.analytics-bar {
+  animation: growBar 1.5s ease-out;
+}
+
+/* Responsive fixes for analytics */
+@media (max-width: 700px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .time-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .time-stat {
+    width: 100%;
+  }
+}
+
+/* Time Performance Analytics Styling - Updated to match screenshot */
+.analytics-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  margin-bottom: 1.5rem;
+}
+
+.analytics-title {
+  background-color: #4361ee;
+  color: white;
+  padding: 0.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.time-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 2px;
+  background-color: #f5f7fb;
+  padding: 1rem;
+}
+
+.time-stat {
+  flex: 1;
+  text-align: center;
+  background-color: #f0f2f9;
+  border-radius: 8px;
+  padding: 0.8rem;
+}
+
+.time-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #4361ee;
+  margin-bottom: 0.2rem;
+}
+
+.time-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* Responsive styles for Time Performance */
+@media (max-width: 767px) {
+  .time-stats {
+    padding: 0.5rem;
+    gap: 4px;
+  }
+
+  .time-stat {
+    padding: 0.6rem 0.4rem;
+  }
+
+  .time-value {
+    font-size: 1.2rem;
+  }
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 700px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .feature {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  #question-text {
+    font-size: 1.4rem;
+  }
+
+  .score-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .score-number {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .quiz-header-brand {
+    padding: 1rem;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .logo i {
+    font-size: 1.5rem;
+  }
+
+  .start-content,
+  .quiz-header,
+  .result-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .answers-container,
+  .progress-container {
+    padding: 0 1rem 1.5rem;
+  }
+
+  #question-text {
+    font-size: 1.2rem;
+  }
+
+  button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .categories,
+  .difficulty-options {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+ .info-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .info-btn {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 1rem 2.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 18px rgba(67, 97, 238, 0.13);
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    letter-spacing: 0.5px;
+    outline: none;
+  }
+  .info-btn i {
+    font-size: 1.3rem;
+    margin-right: 0.5rem;
+  }
+  .info-btn:hover, .info-btn:focus {
+    background: linear-gradient(90deg, var(--accent), var(--primary));
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 24px rgba(67, 97, 238, 0.18);
+  }
+
+  .modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(33, 37, 41, 0.35);
+  justify-content: center;
+  align-items: center;
+}
+.modal.active {
+  display: flex;
+  animation: fadeIn 0.2s;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 18px;
+  padding: 2.2rem 2rem 1.5rem;
+  max-width: 400px;
+  width: 90vw;
+  box-shadow: 0 8px 32px rgba(67,97,238,0.18);
+  position: relative;
+  text-align: left;
+  max-height: 80vh;      /* Limit height to 80% of viewport */
+  overflow-y: auto;      /* Enable vertical scroll if needed */
+}
+.close-modal {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.3rem;
+  font-size: 1.7rem;
+  color: var(--gray);
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+.close-modal:hover {
+  color: var(--accent);
+}
+#modal-title {
+  margin-bottom: 1rem;
+  color: var(--primary);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+#modal-body {
+  color: var(--dark);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+ /* .category-selector {
+    background-color: rgba(76, 201, 240, 0.07);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    box-shadow: 0 2px 12px rgba(76, 201, 240, 0.07);
+  } */
+  .category-selector h3 {
+    font-size: 1.1rem;
+    color: black;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.5px;
+  }
+  /*
+  .category-options {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .category-radio {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 22px;
+    padding: 0.7rem 1.7rem;
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: var(--success);
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s, transform 0.15s;
+    box-shadow: 0 2px 8px rgba(76, 201, 240, 0.07);
+    position: relative;
+    outline: none;
+    user-select: none;
+  }*/
+  .category-radio input[type="radio"] {
+    margin-right: 0.7em;
+    width: 1.1em;
+    height: 1.1em;
+    cursor: pointer;
+  }
+  .category-radio:hover,
+  .category-radio:focus-within,
+  .difficulty-radio:focus-within {
+    background: var(--success);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 18px rgba(76, 201, 240, 0.13);
+  }
+  .category-radio input[type="radio"]:checked + span {
+    font-weight: 700;
+    color: var(--primary);
+    text-shadow: 0 1px 8px rgba(67, 97, 238, 0.09);
+  }
+  .difficulty-radio input[type="radio"]:checked + span {
+    font-weight: 700;
+    color: var(--primary);
+    text-shadow: 0 1px 8px rgba(67, 97, 238, 0.09);
+  }
+  @media (max-width: 600px) {
+    .category-options {
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .category-radio {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+  .info-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .info-buttons button {
+    flex: 1 1 180px;
+    min-width: 140px;
+    max-width: 220px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 0.7rem 1rem;
+    font-size: 1.08rem;
+    font-weight: 600;
+    box-shadow: 0 4px 18px rgba(67, 97, 238, 0.13);
+    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    outline: none;
+    cursor: pointer;
+    justify-content: center;
+  }
+  .info-buttons button i {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  .info-buttons button:hover, .info-buttons button:focus {
+    background: linear-gradient(90deg, var(--accent), var(--primary));
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 8px 24px rgba(67, 97, 238, 0.18);
+  }
+  @media (max-width: 700px) {
+   .info-buttons {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .info-buttons button,
+  #rules-btn {
+    width: auto;
+    min-width: 90px;
+    max-width: 120px;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.7rem !important;
+    border-radius: 22px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  }
+
+  /* Enhanced Score Modal */
+#highscore-modal .modal-content {
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 500px; /* Increased width */
+  width: 95vw;
+  box-shadow: 0 20px 60px rgba(67,97,238,0.2);
+}
+
+/* Modal Header */
+#highscore-modal h2 {
+  color: var(--primary);
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(67,97,238,0.1);
+  position: relative;
+}
+
+/* Organized Sections */
+.score-section {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(67,97,238,0.08);
+}
+
+/* Difficulty Headers */
+.difficulty-header {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Category Headers */
+.category-header {
+  background: rgba(67,97,238,0.05);
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  margin: 1rem 0 0.5rem;
+  font-weight: 500;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Score List Items */
+#modal-leaderboard-list ol {
+  list-style-position: inside;
+  padding: 0.5rem;
+}
+
+#modal-leaderboard-list ol li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  margin: 0.3rem 0;
+  background: rgba(67,97,238,0.02);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+#modal-leaderboard-list ol li:hover {
+  transform: translateX(5px);
+  background: rgba(67,97,238,0.05);
+}
+
+/* Score Value */
+.score-value {
+  font-weight: 600;
+  color: var(--primary);
+  background: linear-gradient(90deg, var(--primary), var(--success));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Trophy Icons */
+.trophy {
+  font-size: 1.2em;
+  margin-right: 0.5rem;
+}
+
+/* Reset Button */
+#reset-scores-btn {
+  margin: 2rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(90deg, #f72585, #e5006e);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: auto;
+  max-width: 200px;
+}
+
+#reset-scores-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(247,37,133,0.2);
+}
+
+/* Empty State */
+.no-scores {
+  text-align: center;
+  padding: 2rem;
+  color: var(--gray);
+  font-style: italic;
+  background: rgba(67,97,238,0.03);
+  border-radius: 12px;
+  margin: 1rem 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  #highscore-modal .modal-content {
+    padding: 1.5rem;
+  }
+  
+  #highscore-modal h2 {
+    font-size: 1.5rem;
+  }
+  
+  .difficulty-header {
+    font-size: 0.9rem;
+  }
+  
+  #modal-leaderboard-list ol li {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+</style>
+<body>
+  <div class="container">
+    <header class="quiz-header-brand">
+      <div class="logo">
+        <i class="fas fa-brain" style="color:#dad9db;"></i>
+        <span>Color Vision Simulator Quizzes</span>
+      </div>
+      <div class="portfolio-info" style="display: flex; gap: 0.7rem; align-items: center;">
+        <img src="https://scontent.fcgy2-4.fna.fbcdn.net/v/t39.30808-1/303104037_471767354963456_8335590933974662935_n.png?stp=dst-png_s200x200&_nc_cat=110&ccb=1-7&_nc_sid=2d3e12&_nc_eui2=AeEy4T_IsvEKMvD9ZLjzjLOwYaR_5joTZAdhpH_mOhNkB3LwmLq3n-_yeGBBl4A9OPOLPYp8rJtedT82mPb6XNni&_nc_ohc=si1VImokpb4Q7kNvwE31z--&_nc_oc=Adk7k_Zv_Wy1rK6nDhKR2_8WNdcZydbmDhcm9t4gAjWORvqrCqwMkQztGgKGpOc0s7c&_nc_zt=24&_nc_ht=scontent.fcgy2-4.fna&_nc_gid=lOPWudsqc5mepVZmvFMBQQ&oh=00_AfPe7gF2fUk_RWdcUBpE3dkxS_lcCtOzeizYL_eoYY36YA&oe=684E460A" alt="Logo 1" style="height: 38px; width: 38px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(67,97,238,0.13); background: #fff;">
+        <img src="https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.6435-9/101752601_107270941020805_6214681282434527677_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHbVVQsiij250KxsPNmTAFE7dcWt0JRxqjt1xa3QlHGqDVBDVa0UwMli8c81sQYjgjEzmeLMYwASMuxRTmJwbeE&_nc_ohc=fO4AVjU3Mv4Q7kNvwH0_UPk&_nc_oc=AdkwMygLIWfTkAjZnJVdksLytinG6gGbASu8BeULQyf7K7QCzOQwozIWE0MQbKUk9ZLK5DElvvo5sMDMG_D2oZAl&_nc_zt=23&_nc_ht=scontent.fcgy1-1.fna&_nc_gid=_ZkTZMn_HycCwK8Im0zh2A&oh=00_AfPwN2YZSbc1vu2d3uukRFeSJ3iTJVWvRnrntaHj1tNr2g&oe=6868B3FC" alt="Logo 2" style="height: 38px; width: 38px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 8px rgba(67,97,238,0.13); background: #fff;">
+      </div>
+    </header>
+
+    <div class="screen active" id="start-screen">
+      <div class="start-content">
+        <h1>Welcome to Color Vision Simulator Quizzes</h1>
+        <p>Challenge yourself with our carefully crafted questions</p>
+
+      <div class="info-buttons">
+        <button type="button" id="mechanics-btn"><i class="fas fa-cogs"></i> Mechanics</button>
+        <button type="button" id="rules-btn"><i class="fas fa-book"></i> Rules</button>
+        <button type="button" id="show-highscore-btn"><i class="fas fa-trophy"></i> Score</button>
+      </div>
+
+      <!-- Modal Structure -->
+<div id="info-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" id="close-modal">&times;</span>
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+        <div class="difficulty-selector">
+          <h3><i class="fas fa-sliders-h"></i> Difficulty Level</h3>
+          <div class="difficulty-options">
+            <label class="difficulty-radio">
+              <input type="radio" name="difficulty" value="all" checked> <span><i class="fas fa-tasks" style="color:#4361ee;margin-right:7px;"></i></span> All Levels  
+            </label>
+            <label class="difficulty-radio">
+              <input type="radio" name="difficulty" value="easy"> <span><i class="fas fa-star" style="color:#4361ee;margin-right:7px;"></i></span> Easy
+            </label>
+            <label class="difficulty-radio">
+              <input type="radio" name="difficulty" value="average"> <span><i class="fas fa-balance-scale" style="color:#4361ee;margin-right:7px;"></i></span> Average
+            </label>
+            <label class="difficulty-radio">
+              <input type="radio" name="difficulty" value="hard"> <span><i class="fas fa-fire" style="color:#4361ee;margin-right:7px;"></i></span> Hard
+            </label>
+          </div>
+        </div>
+
+        <div class="category-selector">
+  <h3><i class="fas fa-lightbulb"></i> Select Category</h3>
+  <div class="category-options">
+    <label class="category-radio">
+      <input type="radio" name="category" value="singleBulb" checked>
+      <span><i class="fas fa-lightbulb" style="color:#4361ee;margin-right:7px;"></i>Single Bulb</span>
+    </label>
+    <label class="category-radio">
+      <input type="radio" name="category" value="rgbBulb">
+      <span><i class="fas fa-palette" style="color:#4361ee;margin-right:7px;"></i>RGB Bulb</span>
+    </label>
+  </div>
+</div>
+
+        <div class="features">
+          <div class="feature">
+            <i class="fas fa-bolt"></i>
+            <span>Instant Feedback</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-chart-line"></i>
+            <span>Performance Analytics</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-medal"></i>
+            <span>Skill Assessment</span>
+          </div>
+        </div>
+         <div style="display: flex; gap: 1rem;">
+        <button id="start-btn"><i class="fas fa-play"></i> Start Quiz</button>
+        <button id="start-btn" onclick="window.location.href='index.html'"><i class="fas fa-chevron-left"></i> Back</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="quiz-screen">
+      <div class="quiz-header">
+        <div class="category-badge" id="current-category">Web Development</div>
+        <div class="question-wrapper">
+          <h2 id="question-text">Question goes here</h2>
+        </div>
+        <div class="quiz-info">
+          <div class="question-count">
+            <i class="fas fa-question-circle"></i>
+            <span>Question <span id="current-question">1</span> of <span id="total-questions">5</span></span>
+          </div>
+
+          <div class="score-display">
+            <i class="fas fa-star"></i>
+            <span>Score: <span id="score">0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="answers-container" class="answers-container">
+        <!-- Answer buttons will be inserted here from our js code -->
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div id="progress" class="progress"></div>
+        </div>
+        <div class="timer">
+          <i class="fas fa-clock"></i>
+          <span id="time-left">15</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="result-screen" class="screen">
+      <div class="result-content">
+        <div class="result-icon">
+          <i class="fas fa-award"></i>
+        </div>
+        <h1>Quiz Results</h1>
+        <div class="result-info">
+          <div class="score-circle">
+            <div class="score-number">
+              <span id="final-score">0</span>/<span id="max-score">25</span>
+            </div>
+          </div>
+          <div id="result-message">Good job!</div>
+        </div>
+
+        <div class="analytics-section">
+          <h3><i class="fas fa-chart-pie"></i> Performance Analytics</h3>
+          <!-- Category Performance -->
+          <div id="category-analytics" class="analytics-content"></div>
+          <!-- Difficulty Performance -->
+          <div id="difficulty-analytics" class="analytics-content"></div>
+          <!-- Time Performance -->
+          <div id="time-analytics" class="analytics-content"></div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="restart-btn"><i class="fas fa-redo"></i> Try Again</button>
+          <button id="share-btn"><i class="fas fa-share-alt"></i> Share Results</button>
+          <button id="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+
+        <div class="group-score-entry" style="margin-top:2em; text-align:center;">
+          <label for="group-name" style="font-weight:bold; color:#4361ee; font-size:1.1rem;">Enter Group Name:</label>
+          <input type="text" id="group-name" placeholder="Group Name"
+            style="padding:10px 16px; border-radius:24px; border:2px solid #4361ee; margin:0 8px; font-size:1rem; outline:none; transition:box-shadow 0.2s;"
+            onfocus="this.style.boxShadow='0 0 0 2px #4cc9f0';"
+            onblur="this.style.boxShadow='none';">
+          <button id="save-score-btn"
+            style="padding:10px 28px; border-radius:24px; background:linear-gradient(90deg,#4361ee,#4cc9f0); color:white; border:none; font-weight:bold; font-size:1rem; box-shadow:0 4px 16px rgba(67,97,238,0.13); transition:background 0.2s,transform 0.2s;"
+            onmouseover="this.style.background='linear-gradient(90deg,#4cc9f0,#4361ee)';this.style.transform='scale(1.04)';"
+            onmouseout="this.style.background='linear-gradient(90deg,#4361ee,#4cc9f0)';this.style.transform='scale(1)';">
+            <i class="fas fa-save"></i> Save Score
+          </button>
+          <div id="save-score-msg" style="margin-top:10px; color:green; font-weight:bold;"></div>
+        </div>
+
+        <div class="leaderboard" id="leaderboard" style="margin:2em auto; max-width:400px; display:none;">
+          <h3 style="text-align:center;">🏆 Highest Group Scores</h3>
+          <ol id="leaderboard-list" style="padding-left:1.5em;"></ol>
+        </div>
+
+        <div class="portfolio-callout">
+          <p>This quiz application was developed by <a href="#" id="developer-link">
+            development portfolio.</p>
+         
+        </div>
+      </div>
+    </div>
+
+    <!-- High Score Modal -->
+    <div id="highscore-modal" class="modal">
+  <div class="modal-content" style="max-width:400px;">
+    <span class="close-modal" id="close-highscore-modal">&times;</span>
+    <h2 style="text-align:center;">🏆 Highest Group Scores</h2>
+    <ol id="modal-leaderboard-list" style="padding-left:1.5em; margin-top:1em;"></ol>
+<!-- Add this inside your High Score Modal, below the <ol id="modal-leaderboard-list"> -->
+<button id="reset-scores-btn" style="margin:1.5em auto 0 auto;display:block;padding:0.7em 1.5em;border-radius:22px;background:#f72585;color:#fff;font-weight:600;border:none;box-shadow:0 2px 8px rgba(67,97,238,0.13);cursor:pointer;transition:background 0.2s;">
+  <i class="fas fa-trash"></i> Reset Scores
+</button>
+  </div>
+</div>
+
+
+  </div>
+  <script src="js1.js"></script>
+</body>
+</html>
